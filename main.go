@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -23,7 +24,11 @@ func main() {
 	for {
 		count, err := file.Read(buf)
 		if err != nil {
-			if err == io.EOF {
+			if line != "" {
+				fmt.Printf("read: %s\n", line)
+				line = ""
+			}
+			if errors.Is(err, io.EOF) {
 				break
 			}
 			fmt.Printf("eror: %s\n", err.Error())
