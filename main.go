@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
 const FILENAME = "messages.txt"
@@ -28,14 +28,12 @@ func main() {
 			}
 			fmt.Printf("eror: %s\n", err.Error())
 		}
-    buf = buf[:count]
-		parts := bytes.Split(buf, []byte("\n"))
-    if len(parts) > 1 {
-      line += string(parts[0])
-      fmt.Printf("read: %s\n", line)
-      line = string(parts[1])
-    } else {
-      line += string(parts[0])
-    }
+		buf = buf[:count]
+		parts := strings.Split(string(buf), "\n")
+		for i := 0; i < len(parts)-1; i++ {
+			fmt.Printf("read: %s%s\n", line, parts[i])
+			line = ""
+		}
+		line += parts[len(parts)-1]
 	}
 }
